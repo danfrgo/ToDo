@@ -1,3 +1,4 @@
+const { response } = require('express');
 const TaskModel = require('../model/TaskModel');
 
 class TaskController {
@@ -14,6 +15,20 @@ class TaskController {
             return res.status(500).json(error);
         });  // then se está tudo OK devolve a resposta, e catch se houverem erros e fazer a respetiva captura
     }
+
+    // editar tarefa
+    async update(req, res){
+        //  {new: true} -> para retornar sempre os dados da tarefa atualizados na resposta (.then)
+        await TaskModel.findByIdAndUpdate({'_id': req.params.id}, req.body, {new: true})
+        .then(response => {
+            return res.status(200).json(response); // response devolve a tarefa atualizada com o operador new acima
+        })
+        // se erro, caputar
+        .catch(error => {
+            return res.status(500).json(error);
+        });
+    }
+
 }
 
 module.exports = new TaskController();
