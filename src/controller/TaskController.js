@@ -1,6 +1,8 @@
 const { response } = require('express');
 const TaskModel = require('../model/TaskModel');
 
+const current = new Date(); // para guardar hora e data atual para comparaçoes
+
 class TaskController {
     // criar nova tarefa
     async create (req, res){
@@ -42,6 +44,7 @@ class TaskController {
             });
     }
 
+    //tarefa por ID
     async show(req, res){
         await TaskModel.findById(req.params.id)
         .then(response => {
@@ -66,6 +69,7 @@ class TaskController {
         });  
     }
 
+    //colocar o status da tarefa como terminado
     async done(req,res){
         await TaskModel.findByIdAndUpdate(
             {'_id': req.params.id},
@@ -79,6 +83,22 @@ class TaskController {
                 return res.status(500).json(error);
             });
 
+    }
+    
+    // tarefas em atraso (less than)
+    async late(req, res){
+        await TaskModel
+        .find({
+            'when': {'$lt' : current},
+            'macaddress': {'$in': req.body.macaddress} // filtrar por macaddress para identificar apenas um telemovel
+        })
+        .sort('when')
+        .then(response => {
+            return res.status(200).json(response);
+        })
+        .catch(error => {
+            return res.status(500).json(error);
+        });
     }
 
 }

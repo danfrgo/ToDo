@@ -6,7 +6,8 @@ const TaskValidation = async (req, res, next) => {
 
   if (!macaddress)
     return res.status(400).json({ error: "Macaddress é obrigatório" });
-  else if (!type) return res.status(400).json({ error: "Tipo é obrigatório" });
+  else if (!type)
+   return res.status(400).json({ error: "Tipo é obrigatório" });
   else if (!title)
     return res.status(400).json({ error: "Título é obrigatório" });
   else if (!description)
