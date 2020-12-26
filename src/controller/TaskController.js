@@ -1,6 +1,9 @@
 const { response } = require('express');
 const TaskModel = require('../model/TaskModel');
-const {startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth} = require('date-fns');
+const {startOfDay, endOfDay, 
+    startOfWeek, endOfWeek, 
+    startOfMonth, endOfMonth,
+    startOfYear, endOfYear} = require('date-fns');
 
 const current = new Date(); // para guardar hora e data atual para comparaçoes
 
@@ -141,6 +144,22 @@ class TaskController {
                 .find( {
                     'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
                     'when' : {'$gte' : startOfMonth(current), '$lte': endOfMonth(current)}
+            })
+            .sort('when')
+            .then(response => {
+                return res.status(200).json(response);
+            })
+            .catch(error => {
+                return res.status(500).json(error);
+            });
+    }
+
+       // listar tarefas por ano
+       async year(req,res){
+        await TaskModel
+                .find( {
+                    'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
+                    'when' : {'$gte' : startOfYear(current), '$lte': endOfYear(current)}
             })
             .sort('when')
             .then(response => {
