@@ -12,6 +12,7 @@ router.post('/',TaskValidation, TaskController.create);
 router.put('/:id',TaskValidation, TaskController.update); // rota com id tem que ser = ao definido no update da TaskController
 router.get('/:id', TaskController.show);
 router.delete('/:id', TaskController.delete);
+router.put('/:id/:done',TaskController.done);
 
 router.get('/filter/all', MacaddressValidation, TaskController.all);
 

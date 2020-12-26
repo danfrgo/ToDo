@@ -23,7 +23,7 @@ class TaskController {
         .then(response => {
             return res.status(200).json(response); // response devolve a tarefa atualizada com o operador new acima
         })
-        // se erro, caputar
+        // se erro, capturar
         .catch(error => {
             return res.status(500).json(error);
         });
@@ -45,7 +45,7 @@ class TaskController {
     async show(req, res){
         await TaskModel.findById(req.params.id)
         .then(response => {
-            //verificar se a tarefa exista (verificar se existe resposta)
+            //verificar se a tarefa existe (verificar se existe resposta)
             if(response)
             return res.status(200).json(response);
             else
@@ -64,6 +64,21 @@ class TaskController {
         .catch(error => {
             return res.status(500).json(error);
         });  
+    }
+
+    async done(req,res){
+        await TaskModel.findByIdAndUpdate(
+            {'_id': req.params.id},
+            {'done': req.params.done}, //passar true or false
+            {new: true}// para devolver os dados da tarefa atualizados
+            )
+            .then(response => {
+                return res.status(200).json(response);
+            })
+            .catch(error => {
+                return res.status(500).json(error);
+            });
+
     }
 
 }
