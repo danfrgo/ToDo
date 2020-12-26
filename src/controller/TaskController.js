@@ -38,7 +38,7 @@ class TaskController {
     // listar todas as tarefas
     async all(req, res){
         // filtrar por macaddress de cada dispositivo
-        await TaskModel.find({macaddress: {'$in': req.body.macaddress}})
+        await TaskModel.find({macaddress: {'$in': req.params.macaddress}})
             .sort('when')
             .then(response => {
                 return res.status(200).json(response);
@@ -94,7 +94,7 @@ class TaskController {
         await TaskModel
         .find({
             'when': {'$lt' : current},
-            'macaddress': {'$in': req.body.macaddress} // filtrar por macaddress para identificar apenas um telemovel
+            'macaddress': {'$in': req.params.macaddress} // filtrar por macaddress para identificar apenas um telemovel
         })
         .sort('when')
         .then(response => {
@@ -109,7 +109,7 @@ class TaskController {
     async today(req,res){
         await TaskModel
                 .find( {
-                    'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
+                    'macaddress': {'$in': req.params.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
                     // maior ou igual que o inicio do dia corrente, ou menor ou igual que o final do dia
                     'when' : {'$gte' : startOfDay(current), '$lte': endOfDay(current)}
             })
@@ -126,7 +126,7 @@ class TaskController {
     async week(req,res){
         await TaskModel
                 .find( {
-                    'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
+                    'macaddress': {'$in': req.params.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
                     'when' : {'$gte' : startOfWeek(current), '$lte': endOfWeek(current)}
             })
             .sort('when')
@@ -139,10 +139,10 @@ class TaskController {
     }
 
      // listar tarefas por mes
-     async month(req,res){
+    async month(req,res){
         await TaskModel
                 .find( {
-                    'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
+                    'macaddress': {'$in': req.params.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
                     'when' : {'$gte' : startOfMonth(current), '$lte': endOfMonth(current)}
             })
             .sort('when')
@@ -155,10 +155,10 @@ class TaskController {
     }
 
        // listar tarefas por ano
-       async year(req,res){
+    async year(req,res){
         await TaskModel
                 .find( {
-                    'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
+                    'macaddress': {'$in': req.params.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
                     'when' : {'$gte' : startOfYear(current), '$lte': endOfYear(current)}
             })
             .sort('when')

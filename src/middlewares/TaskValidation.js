@@ -1,6 +1,8 @@
 const TaskModel = require("../model/TaskModel");
 const { ispast, isPast } = require("date-fns"); // verificar se data ja ocorreu
 
+// para verificar se os dados obrigatorios na hora de criar ou atualizar estao presentes
+
 const TaskValidation = async (req, res, next) => {
   const { macaddress, type, title, description, when } = req.body;
 
