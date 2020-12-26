@@ -1,5 +1,6 @@
 const { response } = require('express');
 const TaskModel = require('../model/TaskModel');
+const {startOfDay, endOfDay} = require('date-fns');
 
 const current = new Date(); // para guardar hora e data atual para comparaçoes
 
@@ -100,6 +101,23 @@ class TaskController {
             return res.status(500).json(error);
         });
     }
+
+    // listar tarefas por dia
+    async today(req,res){
+        await TaskModel
+                .find( {
+                    'macaddress': {'$in': req.body.macaddress}, // filtrar por macaddress para identificar apenas um telemovel
+                    // maior ou igual que o inicio do dia corrente, ou menor ou igual que o final do dia
+                    'when' : {'$gte' : startOfDay(current), '$lte': endOfDay(current)}
+            })
+            .sort('when')
+            .then(response => {
+                return res.status(200).json(response);
+            })
+            .catch(error => {
+                return res.status(500).json(error);
+            });
+            }
 
 }
 
