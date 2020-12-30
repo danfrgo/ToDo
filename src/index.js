@@ -9,6 +9,6 @@ const TaskRoutes = require('./routes/TaskRoutes');
 server.use('/task', TaskRoutes); // intejar o ficheiro com as rotas
 
 
-server.listen(3333, () =>{ // receber requiçoes na porta 3000
+server.listen(3333, () =>{ // receber requiçoes na porta 3333
     console.log('API ONLINE');
 });
