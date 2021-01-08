@@ -16,10 +16,7 @@ const TaskValidation = async (req, res, next) => {
     return res.status(400).json({ error: "Descrição é obrigatória" });
   else if (!when)
     return res.status(400).json({ error: "Data e hora são obrigatórios" });
-  else if (isPast(new Date(when)))
-    return res
-      .status(400)
-      .json({ error: "Data e hora selecionados já não estão disponiveis" });
+  
   else {
       // verificar se já há alguma tarefa alocada no dia e hora definidos
     let exists;
@@ -34,6 +31,11 @@ const TaskValidation = async (req, res, next) => {
               'macaddress': {'$in': macaddress} 
             });
   } else {
+   
+    if (isPast(new Date(when)))
+      return res
+      .status(400)
+      .json({ error: "Data e hora selecionados já não estão disponiveis" });
 
     // se nao ha esse ID entao é uma nova tarefa
     exists = await TaskModel
